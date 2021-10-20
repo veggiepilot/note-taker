@@ -45,6 +45,24 @@ app.post('/api/notes', (req, res) => {
     });  
 });
 
+app.delete('/api/notes/:id', (req, res) => {
+    fs.readFile('./db/db.json', 'utf8', (err, data) => {
+        if (err) throw err;
+        const obj = JSON.parse(data);
+        obj.forEach(element => {
+            if (element.id === req.params.id) {
+                obj.splice(obj.indexOf(element));
+            }
+        });
+        
+        fs.writeFile('./db/db.json', JSON.stringify(obj), (err, data) => {
+            if (err) throw err;
+                if (err) throw err;
+                res.status(200).json(`Note deleted successfully!`); 
+        } );
+    });  
+});
+
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
